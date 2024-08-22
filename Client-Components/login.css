@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .header{
+    background-color: white;
+    padding: 1rem 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header_details{
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo{
+  width: 20px;
+  margin-right: 1rem;
+  height: auto;
+  }
+  
+  .amu{
+    margin: 0;
+    font-size: 1.2rem;
+    color: #ff5733;
+    font-weight: bold;
+  }
+  
+  .container {
+    margin-top: 5px;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .header-line {
+    border: none;
+    border-top: 2px solid #ff5733;
+    margin-bottom: 2rem;
+  }
+  
+  .credentials {
+    text-align: left;
+  }
+  
+  .credentials label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .credentials input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .button {
+    width: 30%;
+    padding: 0.75rem;
+    background-color: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .button:hover {
+    background-color: #e04e26;
+  }
+  
+  .links{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .forgot {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .forgot:hover{
+    background-color: hsl(0, 8%, 95%);
+  }
+  
+  .register {
+    text-align: right;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .header-line2{
+    border: 0;
+    border-top: 1px solid #ff5733;
+    margin-bottom: 1rem;
+  }
