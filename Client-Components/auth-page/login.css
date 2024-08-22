@@ -25,9 +25,9 @@ body {
   }
   
   .logo{
-  width: 20px;
   margin-right: 1rem;
-  height: auto;
+  width: 35px;
+  height: 35px;
   }
   
   .amu{
@@ -38,7 +38,7 @@ body {
   }
   
   .container {
-    margin-top: 5px;
+    margin-top: 10px;
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
@@ -79,7 +79,7 @@ body {
   .button {
     width: 30%;
     padding: 0.75rem;
-    background-color: #ff5733;
+    background-color: hsl(221.2, 83.2%, 53.3%);
     color: white;
     border: none;
     border-radius: 25px;

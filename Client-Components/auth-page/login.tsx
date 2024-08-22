@@ -1,20 +1,18 @@
 import logo from '@/assets/amu_logo.png'
-import 'login.css'
+import './login.css'
+import Image from 'next/image'
 function Login(){
     return(<>
 
-    <header className="header">
-        <div className='header_details'>
-            //@ts-ignore
-            <img src={logo} alt="Logo" className="logo"/>
+    <header className="header mb-5">
+        <div className='header_details flex gap-x-1'>
+            <Image  src={logo} alt="Logo" className="logo"/>
             <h1 className="amu">ALIGARH MUSLIM UNIVERSITY</h1>
         </div>
     </header>
     <div className="container">
-        <h2>Login</h2>
-
+        <h2 className='text-2xl font-bold pt-5'>LOGIN</h2>
         <hr className="header-line"/>
-
         <div className="credentials">
             <label htmlFor="username">Username</label> <br />
                 <input type="text" id = "username" placeholder="Enter username"/> <br />
@@ -27,8 +25,8 @@ function Login(){
             <hr className="header-line2"/>
 
         <div className="links">
-            <a className = "forgot" href="#">FORGOT PASSWORD</a>
-            <a href="#" className="register">REGISTER</a>
+            <a className = "forgot border" href="#">FORGOT PASSWORD</a>
+            <a href="/auth/register" className="register">REGISTER</a>
         </div>
      </div>
     </div>
