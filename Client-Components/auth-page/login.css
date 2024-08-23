@@ -33,12 +33,12 @@ body {
   .amu{
     margin: 0;
     font-size: 1.2rem;
-    color: #ff5733;
+    color: hsl(221.2, 83.2%, 53.3%);
     font-weight: bold;
   }
   
   .container {
-    margin-top: 10px;
+    margin-top: 30px;
     background-color: white;
     padding: 2rem;
     border-radius: 8px;
@@ -52,8 +52,8 @@ body {
   }
   
   .header-line {
-    border: none;
-    border-top: 2px solid #ff5733;
+    border: 0;
+    border-top: 2px solid hsl(221.2, 83.2%, 53.3%);
     margin-bottom: 2rem;
   }
   
@@ -89,7 +89,7 @@ body {
   }
   
   .button:hover {
-    background-color: #e04e26;
+    background-color: hsla(221, 83%, 53%, 0.764);
   }
   
   .links{
@@ -116,6 +116,20 @@ body {
   
   .header-line2{
     border: 0;
-    border-top: 1px solid #ff5733;
+    border-top: 1px solid hsl(221.2, 83.2%, 53.3%);
     margin-bottom: 1rem;
   }
+
+  .forgot, .register {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.forgot:hover, .register:hover {
+    background-color: hsla(0, 8%, 95%, 0);
+}
