@@ -1,8 +1,19 @@
+"use client";  // Add this line at the very top
+
 import logo from '@/assets/amu_logo.png'
 import './login.css'
 import Image from 'next/image'
+import React, {useState} from 'react';
 
 function Login() {
+    const [Username, setUsername] = useState('');
+    const [Password, setPassword] = useState('');
+
+    const updateInitials = () => {
+        setUsername('');
+        setPassword('');
+    }
+
     return (
         <>
             <header className="header mb-5">
@@ -17,13 +28,27 @@ function Login() {
                 <div className="credentials space-y-4">
                     <div>
                         <label htmlFor="username" className="block text-sm sm:text-base">Username</label>
-                        <input type="text" id="username" placeholder="Enter username" className="w-full mt-1 px-3 py-2 border rounded-lg" />
+                        <input 
+                            type="text" 
+                            id="username" 
+                            placeholder="Enter username" 
+                            className="w-full mt-1 px-3 py-2 border rounded-lg" 
+                            value={Username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
                     </div>
                     <div>
                         <label htmlFor="password" className="block text-sm sm:text-base">Password</label>
-                        <input type="password" id="password" placeholder="Enter password" className="w-full mt-1 px-3 py-2 border rounded-lg" />
+                        <input 
+                            type="password" 
+                            id="password" 
+                            placeholder="Enter password" 
+                            className="w-full mt-1 px-3 py-2 border rounded-lg" 
+                            value={Password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </div>
-                    <button className="button w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</button>
+                    <button onClick={updateInitials} className="button w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</button>
                 </div>
                 <hr className="header-line2 my-4 sm:my-6" />
                 <div className="links flex flex-col sm:flex-row justify-between text-sm sm:text-base">
