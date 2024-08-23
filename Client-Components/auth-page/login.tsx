@@ -15,11 +15,19 @@ function Login() {
     }
 
     return (
+<<<<<<< HEAD
         <>
             <header className="header mb-4">
                 <div className="header_details flex items-center gap-x-2 sm:gap-x-3 lg:gap-x-4">
                     <Image src={logo} alt="Logo" className="logo w-8 sm:w-10 lg:w-12" />
                     <h1 className="amu text-xs sm:text-sm lg:text-base">ALIGARH MUSLIM UNIVERSITY</h1>
+=======
+        <div className='pt-5 mt-20'>
+            <header className="header mb-5">
+                <div className="header_details flex items-center gap-x-2 sm:gap-x-4 lg:gap-x-6">
+                    <Image src={logo} alt="Logo" className="logo w-8 sm:w-12 lg:w-16" />
+                    <h1 className="amu text-sm sm:text-lg lg:text-xl">ALIGARH MUSLIM UNIVERSITY</h1>
+>>>>>>> 609cc51351a4e35f921a82e299179d1d586a2ee4
                 </div>
             </header>
             <div className="container mx-auto px-4 sm:px-5 lg:px-6 max-w-lg w-full">
@@ -56,7 +64,7 @@ function Login() {
                     <a href="/auth/register" className="register inline-block px-4 py-2 rounded-full font-bold text-black hover:bg-gray-100 transition py-1 sm:py-0">REGISTER</a>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
