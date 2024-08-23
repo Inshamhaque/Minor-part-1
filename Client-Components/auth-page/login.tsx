@@ -39,7 +39,7 @@ function Login() {
                         <input 
                             type="text" 
                             id="username" 
-                            placeholder="Enter username" 
+                            placeholder="name@zhcet.ac.in" 
                             className="w-full mt-1 px-3 py-2 border rounded-lg" 
                             value={Username}
                             onChange={(e) => setUsername(e.target.value)}
