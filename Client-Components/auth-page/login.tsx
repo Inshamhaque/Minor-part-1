@@ -27,7 +27,7 @@ function Login() {
                 <hr className="header-line my-4 sm:my-6" />
                 <div className="credentials space-y-4">
                     <div>
-                        <label htmlFor="username" className="block text-sm sm:text-base">Username</label>
+                        <label htmlFor="username" className="block text-xs sm:text-base">Username</label>
                         <input 
                             type="text" 
                             id="username" 
