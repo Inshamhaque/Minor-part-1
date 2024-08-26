@@ -1,19 +1,22 @@
 //user schemas 
 // register inputs and login inputs
 
-import { z } from 'zod';
+import { number, z } from 'zod';
 // for backend
 export const registerSchema = z.object({
-    mail : z.string().email().endsWith('zhcet.ac.in' || 'myamu.ac.in'),
+    mail : z.string().email().refine((value)=>{
+        const domain = value.split('@')[1];
+        return(domain==='myamu.ac.in'||domain==='zhcet.ac.in')
+    },{
+        message : "domain must be either 'myamu.ac.in' or 'zhcet.ac.in'"
+    }),
     password : z.string().min(8),
+    phone: z.string().min(10),
+    firstName : z.string(),
+    lastName : z.string(),
+    facultyId : z.string()
 })
 // for frontend
 export type registerinputs = z.infer<typeof registerSchema>;
 
-//login inputs
-//though this is optional 
-export const loginSchema = z.object({
-    mail : z.string().endsWith('zhcet.ac.in'||'myamu.ac.in'),
-    password : z.string().min(8),
-})
-export type logininputs = z.infer<typeof loginSchema>;
+

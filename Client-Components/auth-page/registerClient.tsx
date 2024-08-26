@@ -1,128 +1,190 @@
 'use client'
 import { registerinputs, registerSchema } from "@/zodfile/schema";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const Register = () => {
   const [credentials, setCredentials] = useState<registerinputs>({
     mail: '',
-    password: ''
+    password: '',
+    firstName :'',
+    lastName:'',
+    phone:'',
+    facultyId:''
   });
 
-  const [errors, setErrors] = useState<{ mail?: string, password?: string }>({});
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [facultyId, setFacultyId] = useState<string>('');
+  const router = useRouter();
 
-  const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+  const [errors, setErrors] = useState<{ 
+    mail?: string, 
+    password?: string,
+    confirmPassword?: string,
+    firstName?: string,
+    lastName?: string,
+    phone?: string,
+    facultyId?: string
+  }>({});
+
+  const handleClick = (e:any) => {
     e.preventDefault();
+
     const result = registerSchema.safeParse(credentials);
     
-    if (!result.success) {
-      const formattedErrors = result.error.format();
+    if (!result.success || confirmPassword !== credentials.password) {
+      const formattedErrors = result.error?.format() || {};
+      
       setErrors({
         mail: formattedErrors.mail?._errors[0] || '',
         password: formattedErrors.password?._errors[0] || '',
+        confirmPassword: confirmPassword !== credentials.password ? 'Passwords do not match' : '',
+        firstName: firstName ? '' : 'First name is required',
+        lastName: lastName ? '' : 'Last name is required',
+        phone: phone ? '' : 'Phone number is required',
+        facultyId: facultyId ? '' : 'Faculty ID is required',
       });
-    } else {
-      // If form submission is successful, clear the errors
+    } 
+    else {
       setErrors({});
-      console.log("Form Submitted Successfully", credentials);
+      console.log("Form Submitted Successfully", {
+        ...credentials,
+        firstName,
+        lastName,
+        phone,
+        facultyId,
+        confirmPassword,
+      });
+    }
+    if(result.success){
+      router.push('/dashboard');
     }
   };
 
   return (
-    <div>
-      <section className="bg-slate-200 font-sans">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:border-gray-700">
-            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="flex border-b border-slate-700 p-2 justify-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                Create an account
-              </h1>
-              <form className="space-y-4 md:space-y-6" onSubmit={handleClick}>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Institutional Mail
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    placeholder="name@zhcet.ac.in"
-                    value={credentials.mail}
-                    required
-                    onChange={(e) => {
-                      setCredentials({
-                        ...credentials,
-                        mail: e.target.value
-                      });
-                      setErrors({})
-                    }}
-                  />
-                  {errors.mail && <div className="text-sm text-red-600">{errors.mail}</div>}
-                </div>
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    value={credentials.password}
-                    required
-                    onChange={(e) => {
-                      setCredentials({
-                        ...credentials,
-                        password: e.target.value
-                      });
-                      setErrors({})
-                    }}
-                  />
-                  {errors.password && <div className="text-sm text-red-600">{errors.password}</div>}
-                </div>
-                <div>
-                  <label
-                    htmlFor="confirm-password"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Confirm password
-                  </label>
-                  <input
-                    type="password"
-                    name="confirm-password"
-                    id="confirm-password"
-                    placeholder="••••••••"
-                    className="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-[#2563eb] dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                >
-                  Create an account
-                </button>
-                <p className="text-sm font-light text-gray-700">
-                  Already have an account?{" "}
-                  <a
-                    href="/auth/login"
-                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                  >
-                    Login here
-                  </a>
-                </p>
-              </form>
+    <div className="bg-gray-200 h-full">
+      <div className="">
+        {/* form section */}
+        <form className="flex flex-col shadow-lg mt-5 max-w-md mx-auto bg-white gap-5 mb-5 p-5 border border-gray-800 rounded-lg gap-y-3" onSubmit={handleClick}>
+          <div className="flex justify-center font-semibold text-xl border-b border-b-2 border-gray-600 pb-3 mb-2">CREATE AN ACCOUNT</div>
+          <div className="relative z-0 w-full mb-5 group">
+              <input 
+                type="email" 
+                name="floating_email" 
+                id="floating_email" 
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                placeholder=" " 
+                required
+                value={credentials.mail}
+                onChange={(e) => setCredentials({ ...credentials, mail: e.target.value })}
+              />
+              <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Institutional mail </label>
+              {!errors.mail && <div className="text-xs text-blue-800">Mail should end with "myamu.ac.in" or "zhcet.ac.in"</div>}
+              {errors.mail && <div className="text-sm text-red-600">{errors.mail}</div>}
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+              <input 
+                type="password" 
+                name="floating_password" 
+                id="floating_password" 
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                placeholder=" " 
+                required
+                value={credentials.password}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              />
+              <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+              {!errors.password && <div className="text-xs text-blue-800">Minimum length should be 8 letters</div>}
+              {errors.password && <div className="text-sm text-red-600">{errors.password}</div>}
+          </div>
+          <div className="relative z-0 w-full mb-5 group">
+              <input 
+                type="password" 
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                placeholder=" " 
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm password</label>
+              {errors.confirmPassword && <div className="text-sm text-red-600">{errors.confirmPassword}</div>}
+          </div>
+          <div className="grid md:grid-cols-2 md:gap-6">
+            <div className="relative z-0 w-full mb-5 group">
+                <input 
+                  type="text" 
+                  name="floating_first_name" 
+                  id="floating_first_name" 
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                <label htmlFor="floating_first_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">First name</label>
+                {errors.firstName && <div className="text-sm text-red-600">{errors.firstName}</div>}
+            </div>
+            <div className="relative z-0 w-full mb-5 group">
+                <input 
+                  type="text" 
+                  name="floating_last_name" 
+                  id="floating_last_name" 
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                <label htmlFor="floating_last_name" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Last name</label>
+                {errors.lastName && <div className="text-sm text-red-600">{errors.lastName}</div>}
             </div>
           </div>
-        </div>
-      </section>
+          <div className="grid md:grid-cols-2 md:gap-6">
+            <div className="relative z-0 w-full mb-5 group">
+                <input 
+                  type="tel" 
+                  pattern="[0-9]{10}" 
+                  name="floating_phone" 
+                  id="floating_phone" 
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+                <label htmlFor="floating_phone" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Phone</label>
+                {errors.phone && <div className="text-sm text-red-600">{errors.phone}</div>}
+            </div>
+            <div className="relative z-0 w-full mb-5 group">
+                <input 
+                  type="text" 
+                  name="floating_faculty_id" 
+                  id="floating_faculty_id" 
+                  className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-gray-800 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                  placeholder=" " 
+                  required
+                  value={facultyId}
+                  onChange={(e) => setFacultyId(e.target.value)}
+                />
+                <label htmlFor="floating_faculty_id" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Faculty ID</label>
+                {errors.facultyId && <div className="text-sm text-red-600">{errors.facultyId}</div>}
+            </div>
+          </div>
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <button className="px-3 py-1.5 w-full text-white text-lg font-medium bg-blue-500 hover:bg-blue-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" type="submit"
+            onClick={handleClick}>
+              Create Account
+            </button>
+          </div>
+          <div className="flex gap-x-2 text-sm">
+            <div className="text-gray-600">Already have an account?</div>
+            <a href="/auth/login" className="text-blue-500 underline-offset-2">Login</a>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

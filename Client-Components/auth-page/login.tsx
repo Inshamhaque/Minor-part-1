@@ -35,7 +35,7 @@ function Login() {
                             type="text" 
                             id="username" 
                             placeholder="name@zhcet.ac.in" 
-                            className="w-full mt-1 px-3 py-2 border rounded-lg" 
+                            className="w-full mt-1 px-3 py-1 border bg-gray-100 rounded-lg "  
                             value={Username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
@@ -46,7 +46,7 @@ function Login() {
                             type="password" 
                             id="password" 
                             placeholder="Enter password" 
-                            className="w-full mt-1 px-3 py-2 border rounded-lg" 
+                            className="w-full mt-1 px-3 py-2 border bg-gray-100 rounded-lg" 
                             value={Password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
