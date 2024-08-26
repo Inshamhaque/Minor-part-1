@@ -9,49 +9,36 @@
   
   <h3>Project Timeline</h3>
   
-  <div align="left">
-    <h4>Week 1:</h4>
-    <ul>
-      <li>Project setup and environment configuration.</li>
-      <li>Basic UI/UX design and wireframing.</li>
-      <li>Setting up the backend with user authentication.</li>
-    </ul>
+Week 1:
 
-    <h4>Week 2:</h4>
-    <ul>
-      <li>Implementing the chat interface.</li>
-      <li>Setting up real-time messaging using WebSocket or similar technologies.</li>
-      <li>Initial database setup.</li>
-    </ul>
+Project setup and environment configuration.
+Basic UI/UX design and wireframing.
+Setting up the backend with user authentication.
+Week 2:
 
-    <h4>Week 3:</h4>
-    <ul>
-      <li>Building group chat functionality.</li>
-      <li>Implementing user presence indicators (online/offline status).</li>
-      <li>Enhancing the UI/UX design.</li>
-    </ul>
+Implementing the chat interface.
+Setting up real-time messaging using WebSocket or similar technologies.
+Initial database setup.
+Week 3:
 
-    <h4>Week 4:</h4>
-    <ul>
-      <li>Adding message notifications.</li>
-      <li>Implementing file sharing within chats.</li>
-      <li>Basic testing and bug fixing.</li>
-    </ul>
+Building group chat functionality.
+Implementing user presence indicators (online/offline status).
+Enhancing the UI/UX design.
+Week 4:
 
-    <h4>Week 5:</h4>
-    <ul>
-      <li>Finalizing all features.</li>
-      <li>Conducting extensive testing (unit tests, integration tests).</li>
-      <li>Preparing for deployment.</li>
-    </ul>
+Adding message notifications.
+Implementing file sharing within chats.
+Basic testing and bug fixing.
+Week 5:
 
-    <h4>Week 6:</h4>
-    <ul>
-      <li>Deployment to production environment.</li>
-      <li>Final bug fixes and optimizations.</li>
-      <li>Preparing project documentation.</li>
-    </ul>
-  </div>
+Finalizing all features.
+Conducting extensive testing (unit tests, integration tests).
+Preparing for deployment.
+Week 6:
+
+Deployment to production environment.
+Final bug fixes and optimizations.
+Preparing project documentation.
   
   <h3>Development Stack</h3>
   <p>
