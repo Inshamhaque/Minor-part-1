@@ -39,7 +39,9 @@ export const Register = () => {
       const formattedErrors = result.error?.format() || {};
       
       setErrors({
+        //@ts-ignore
         mail: formattedErrors.mail?._errors[0] || '',
+        //@ts-ignore
         password: formattedErrors.password?._errors[0] || '',
         confirmPassword: confirmPassword !== credentials.password ? 'Passwords do not match' : '',
         firstName: firstName ? '' : 'First name is required',
