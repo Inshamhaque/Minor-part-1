@@ -32,7 +32,6 @@ export const Register = () => {
 
   const handleClick = (e:any) => {
     e.preventDefault();
-
     const result = registerSchema.safeParse(credentials);
     
     if (!result.success || confirmPassword !== credentials.password) {
@@ -84,7 +83,6 @@ export const Register = () => {
                 onChange={(e) => setCredentials({ ...credentials, mail: e.target.value })}
               />
               <label htmlFor="floating_email" className="peer-focus:font-medium absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Institutional mail </label>
-              {!errors.mail && <div className="text-xs text-blue-800">Mail should end with "myamu.ac.in" or "zhcet.ac.in"</div>}
               {errors.mail && <div className="text-sm text-red-600">{errors.mail}</div>}
           </div>
           <div className="relative z-0 w-full mb-5 group">
@@ -99,7 +97,6 @@ export const Register = () => {
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
               />
               <label htmlFor="floating_password" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
-              {!errors.password && <div className="text-xs text-blue-800">Minimum length should be 8 letters</div>}
               {errors.password && <div className="text-sm text-red-600">{errors.password}</div>}
           </div>
           <div className="relative z-0 w-full mb-5 group">
