@@ -40,11 +40,11 @@ This project is focused on developing a real-time chat application with features
 
 ## Development Stack
 
-**Frontend:** React.js, Tailwind CSS  
+**Frontend:** Next.js, Tailwind CSS  
 **Backend:** Node.js, Express.js  
-**Database:** PostgreSQL or MongoDB  
+**Database:** PostgreSQL & Redis  
 **Real-time Communication:** WebSocket  
-**Authentication:** JWT or OAuth
+**Authentication:** JWT
 
 ## Contributions
 
