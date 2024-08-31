@@ -2,6 +2,7 @@
 import { registerinputs, registerSchema } from "@/zodfile/schema";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from 'axios';
 
 export const Register = () => {
   const [credentials, setCredentials] = useState<registerinputs>({
@@ -11,7 +12,8 @@ export const Register = () => {
     lastName:'',
     phone:'',
     facultyId:''
-  });
+  });  
+  const BASE_URL = process.env.BASE_URL;
 
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
@@ -30,12 +32,14 @@ export const Register = () => {
     facultyId?: string
   }>({});
 
-  const handleClick = (e:any) => {
+  const handleClick = async (e:any) => {
     e.preventDefault();
     const result = registerSchema.safeParse(credentials);
-    
+    console.log("result:",result.success);
+    console.log('handle click triggered');
     if (!result.success || confirmPassword !== credentials.password) {
       const formattedErrors = result.error?.format() || {};
+      console.log('handle click inside  triggered');
       
       setErrors({
         //@ts-ignore
@@ -49,19 +53,25 @@ export const Register = () => {
         facultyId: facultyId ? '' : 'Faculty ID is required',
       });
     } 
-    else {
-      setErrors({});
-      console.log("Form Submitted Successfully", {
-        ...credentials,
-        firstName,
-        lastName,
-        phone,
-        facultyId,
-        confirmPassword,
-      });
+    try{
+      console.log('trying post request')
+      const res = await axios.post(`http://localhost:3000/api/auth/signup`,{
+        mail : credentials.mail,
+        password : credentials.password,
+        name : credentials.firstName+credentials.lastName,
+        facultyId : credentials.facultyId
+      })
+      console.log('inside result.success!!!')
+      if(!res){
+        console.log('error registering from register Client');
+      }
+      if(res.status==200){
+        // TODO: send mail here
+        router.push('/auth/verify')
+      }
     }
-    if(result.success){
-      router.push('/dashboard');
+    catch(e){
+      console.log('some error occurred')
     }
   };
 
