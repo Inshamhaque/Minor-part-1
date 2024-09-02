@@ -12,7 +12,7 @@ export async function POST(req : NextRequest){
     try{
         //TODO: backend zod implementation for name, password, mail, facultyId etc...
         //check if user already exists or not
-        const existing_user = await prisma.user.findFirst({
+        const existing_user = await prisma.user.findUnique({
             where:{
                 facultyId : body.facultyId
             }
@@ -21,8 +21,12 @@ export async function POST(req : NextRequest){
             return NextResponse.json({
                 message : "user already exists",
                 status : 404
-            })
+            // },{
+            //     status : 404
+            // }
+        })
         }
+        //for new user :-
         const hashedPassword = await bcrypt.hash(password,10);
         const user = await prisma.user.create({
             data : {
