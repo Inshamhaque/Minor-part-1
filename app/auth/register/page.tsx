@@ -3,7 +3,7 @@ import { Appbar } from '@/components/Appbar'
 export default function (){
     return(
         <div className="flex flex-col ">
-            <Appbar />
+            {/* <Appbar /> */}
             <Register />
         </div>
         

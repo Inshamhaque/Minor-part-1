@@ -5,7 +5,7 @@ export default function(){
     return(
         <div className="flex flex-col">
             <Appbar />
-            < OTPcard mail = 'your registered mail' />
+            < OTPcard />
         </div>
     )
 }
