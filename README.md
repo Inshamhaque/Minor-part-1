@@ -11,7 +11,7 @@ This project is focused on developing a real-time chat application with features
 ### Week 1:
 - Project setup and environment configuration.
 - Basic UI/UX design and wireframing.
-- Setting up the backend with user authentication.
+- Setting up the backend with user authentication. 
 
 ### Week 2:
 - Implementing the chat interface.
