@@ -11,7 +11,7 @@ export async function POST(req : NextRequest){
     //creating a row for the user 
     try{
         //TODO: backend zod implementation for name, password, mail, facultyId etc...
-        //check if user already exists or not
+         //check if user already exists or not  
         const existing_user = await prisma.user.findUnique({
             where:{
                 facultyId : body.facultyId
@@ -21,9 +21,6 @@ export async function POST(req : NextRequest){
             return NextResponse.json({
                 message : "user already exists",
                 status : 404
-            // },{
-            //     status : 404
-            // }
         })
         }
         //for new user :-
@@ -45,6 +42,7 @@ export async function POST(req : NextRequest){
         }
         return NextResponse.json({
             message : "User created successfully, verification awaited",
+            otp : user.verifyOTP,
             status : 200
         })
         

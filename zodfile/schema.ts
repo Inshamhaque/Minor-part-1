@@ -6,7 +6,7 @@ import { number, z } from 'zod';
 export const registerSchema = z.object({
     mail : z.string().email().refine((value)=>{
         const domain = value.split('@')[1];
-        return(domain==='myamu.ac.in'||domain==='zhcet.ac.in')
+        return(domain==='myamu.ac.in'||domain==='zhcet.ac.in' || domain === 'gmail.com')
     },{
         message : "domain must be either 'myamu.ac.in' or 'zhcet.ac.in'"
     }),

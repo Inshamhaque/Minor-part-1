@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import axios  from 'axios';
 import React from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export const Register = () => {
   const [credentials, setCredentials] = useState<registerinputs>({
@@ -44,7 +45,7 @@ export const Register = () => {
       autoClose : 5000
     });
   }
-
+  const [otp,setotp] = useState<number>(0);
 
   // axios post function
   const sendreq = async () => {
@@ -103,11 +104,20 @@ export const Register = () => {
       } else {
         // if user credentials were valid, redirect him to verify page
         console.log('User creation was successful');
+        setotp(res?.data.otp);
+        await new Promise(resolve => setTimeout(resolve,1000)); // delay of 1 sec
         router.push('/auth/verify');
       }
     } catch (e) {
       console.log('Some error occurred:', e);
+      return ;
     }
+    // sending mail here if no error had occurred .. 
+    const res = await axios.post(`http://localhost:3000/api/send-email`,{
+      email : credentials.mail,
+      subject : "verification OTP",
+      message : `<div>Dear ${firstName} ${lastName} your OTP is ${otp}</div>`
+    })
   };
 
   return (
