@@ -45,7 +45,7 @@ export const Register = () => {
       autoClose : 5000
     });
   }
-  const [otp,setotp] = useState<number>(0);
+  const [OTP,setotp] = useState<number>(0);
 
   // axios post function
   const sendreq = async () => {
@@ -62,6 +62,10 @@ export const Register = () => {
         return null;
       }
       console.log('User registration successful');
+      const data = res?.data;
+      const otp = data.otp;
+      console.log("otp is : ",otp);
+      setotp(otp); 
       return res;
     } catch (error) {
       console.error('Error occurred while sending request:', error);
@@ -96,6 +100,7 @@ export const Register = () => {
 
     try {
       const res = await sendreq();
+      
       if (!res) {
         console.log('Error occurred while sending request');
       } else if (res?.data?.status === 404) {
@@ -112,11 +117,16 @@ export const Register = () => {
       console.log('Some error occurred:', e);
       return ;
     }
-    // sending mail here if no error had occurred .. 
+    // sending mail here if no error had occurred ... 
     const res = await axios.post(`http://localhost:3000/api/send-email`,{
       email : credentials.mail,
       subject : "verification OTP",
-      message : `<div>Dear ${firstName} ${lastName} your OTP is ${otp}</div>`
+      message : (
+        <div className="flex border justtify-center items-center m-2">
+          <div className="text-center font-semibold text-lg">Welcome to AMU Connect Portal</div>
+          <div className="text-center text-md">Your OTP for verification is : {OTP} </div>
+        </div>
+      )
     })
   };
 

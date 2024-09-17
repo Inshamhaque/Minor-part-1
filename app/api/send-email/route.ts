@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
             from: process.env.SMTP_USER, // Sender's email address
             to: email,                    // Recipient's email address
             subject: subject,              // Subject of the email
-            text: message,                 // Plain text message
+            html: message,                 // Plaian text message
         });
 
         // Return a success response

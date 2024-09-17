@@ -30,7 +30,7 @@ export const OTPcard = () => {
     }
 
     return (
-        <div className=" mt-5 flex justify-center items-center">
+        <div className="  h-screen flex justify-center items-center bg-gray-200">
             <div className="flex flex-col border rounded-lg border-gray-500 shadow-md bg-white p-10 gap-y-5">
                 {/* the header of card */}
                 <div className="text-2xl font-semibold text-center ">Enter OTP</div>
