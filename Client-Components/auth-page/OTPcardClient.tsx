@@ -2,11 +2,11 @@
 import { OTPbox } from "@/components/OTPbox";
 import { useEffect, useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import axios from 'axios'
 import "react-toastify/dist/ReactToastify.css";
 
 export const OTPcard = () => {
     const [time, setTime] = useState<number>(60);
-    const inputRefs = useRef<HTMLDivElement[]>([]);
     // mounts everytime the time is changed
     useEffect(() => {
         const timer = setInterval(() => {
@@ -25,8 +25,27 @@ export const OTPcard = () => {
     }
     // when user click in try again part 
     const resendEmailHandler = ()=>{
-        setTime(60);
-        notify();
+        if(time==0){
+            // TODO : resend email here
+            setTime(60);
+            notify(); 
+        }
+        
+    }
+    //on click handler 
+    const onclickHandler = async ()=>{
+        const res = await axios.post ('http://localhost:3000/api/auth/verify',{
+            f_id : localStorage.getItem('facultyId'),
+            otp : 'entered otp'
+        })
+        if(res.data.status==200){
+            console.log('otp verified')
+            return true;
+        }
+        else{
+            console.log('otp not verified');
+            return false;
+        }
     }
 
     return (
@@ -46,7 +65,9 @@ export const OTPcard = () => {
                 >
                     Try again in {time>=10?`00:00:${time}`: `00:00:0${time}`}
                 </div>
-                <button className="bg-blue-500 h-12 rounded-md text-white hover:bg-blue-600">
+                <button className="bg-blue-500 h-12 rounded-md text-white hover:bg-blue-600"
+                onClick={()=>{onclickHandler}}
+                >
                     VERIFY
                 </button>
                 < ToastContainer />

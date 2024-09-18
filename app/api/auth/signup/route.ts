@@ -7,7 +7,7 @@ import { stat } from "fs";
 export async function POST(req : NextRequest){
     const body = await req.json();
     const { mail, password, facultyId, name } = body;
-    const OTP = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
+    const OTP = (Math.floor(Math.random() * 100000) + 100000).toString().substring(1);
     //creating a row for the user 
     try{
         //TODO: backend zod implementation for name, password, mail, facultyId etc...
@@ -43,6 +43,7 @@ export async function POST(req : NextRequest){
         return NextResponse.json({
             message : "User created successfully, verification awaited",
             otp : user.verifyOTP,
+            facultyId : user.facultyId,
             status : 200
         })
         

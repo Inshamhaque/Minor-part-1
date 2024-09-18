@@ -18,7 +18,7 @@ export const Register = () => {
     facultyId:''
   });  
 
-  const BASE_URL = process.env.BASE_URL;
+  // const BASE_URL = process.env.BASE_URL;
 
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
@@ -45,7 +45,7 @@ export const Register = () => {
       autoClose : 5000
     });
   }
-  const [OTP,setotp] = useState<number>(0);
+  let OTP = 0;
 
   // axios post function
   const sendreq = async () => {
@@ -64,8 +64,9 @@ export const Register = () => {
       console.log('User registration successful');
       const data = res?.data;
       const otp = data.otp;
+      OTP = otp;
+      console.log('OTP is : ', OTP);
       console.log("otp is : ",otp);
-      setotp(otp); 
       return res;
     } catch (error) {
       console.error('Error occurred while sending request:', error);
@@ -109,8 +110,6 @@ export const Register = () => {
       } else {
         // if user credentials were valid, redirect him to verify page
         console.log('User creation was successful');
-        setotp(res?.data.otp);
-        await new Promise(resolve => setTimeout(resolve,1000)); // delay of 1 sec
         router.push('/auth/verify');
       }
     } catch (e) {
@@ -118,16 +117,45 @@ export const Register = () => {
       return ;
     }
     // sending mail here if no error had occurred ... 
-    const res = await axios.post(`http://localhost:3000/api/send-email`,{
-      email : credentials.mail,
-      subject : "verification OTP",
-      message : (
-        <div className="flex border justtify-center items-center m-2">
-          <div className="text-center font-semibold text-lg">Welcome to AMU Connect Portal</div>
-          <div className="text-center text-md">Your OTP for verification is : {OTP} </div>
-        </div>
-      )
-    })
+    localStorage.setItem('facultyId',facultyId);
+    // setting correct date
+    const date = new Date();
+    const today = date.getDate;
+    const res = await axios.post(`http://localhost:3000/api/send-email`, {
+      email: credentials.mail,
+      subject: "Internship Offer Letter",
+      message: 
+      `<html>
+  <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+    <div style="border: 2px solid #000; padding: 20px; text-align: center; width: 600px; margin: 0 auto; background-color: #fff;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-weight: bold; font-size: 22px;">AMU Connect Portal</div>
+      </div>
+      <div style="font-size: 18px; padding: 4px; margin-bottom: 20px;">Aligarh Muslim University, Aligarh</div>
+      <hr style="border-top: 1px solid #000; margin: 20px 0;">
+      <div style="font-size: 20px; font-weight: bold; padding: 10px; color: #333;">OTP Verification</div>
+      <div style="font-size: 18px; padding: 4px; line-height: 1.5; color: #555;">
+        <p>Dear ${firstName}${lastName}</p>
+        <p>Welcome to the AMU Connect Portal!</p>
+        <p>To complete your registration, please verify your email by using the OTP below:</p>
+        <p style="font-size: 24px; font-weight: bold; color: #007bff;">${OTP}</p>
+        <p>This OTP is valid for the next 10 minutes. If you did not request this, please ignore this email.</p>
+      </div>
+      <a href="[Verification Link]" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 5px; margin: 20px 0;">Verify Email</a>
+      <div style="font-size: 16px; padding-top: 10px; color: #777;">
+        <p>If you have any questions or need further assistance, please contact our support team.</p>
+        <p>Thank you for using AMU Connect Portal!</p>
+      </div>
+      <hr style="border-top: 1px solid #000; margin: 20px 0;">
+      <div style="font-size: 16px; padding-top: 10px; color: #777;">
+        <p>Date:${today}</p>
+      </div>
+    </div>
+  </body>
+</html>
+`
+    });
+    
   };
 
   return (
