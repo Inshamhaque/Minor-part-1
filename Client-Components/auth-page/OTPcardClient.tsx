@@ -1,12 +1,15 @@
 'use client'
 import { OTPbox } from "@/components/OTPbox";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import axios from 'axios'
 import "react-toastify/dist/ReactToastify.css";
 
 export const OTPcard = () => {
     const [time, setTime] = useState<number>(60);
+    const [otp,setotp] = useState<number | null>(null);
+    const router = useRouter();
     // mounts everytime the time is changed
     useEffect(() => {
         const timer = setInterval(() => {
@@ -23,6 +26,18 @@ export const OTPcard = () => {
             autoClose : 5000
         })
     }
+    const success = ()=>{
+        return toast.success('Verification sucessfull',{
+            position : 'top-right',
+            autoClose : 5000
+        })
+    }
+    const failure = ()=>{
+        return toast.error('Invalid OTP',{
+            position : 'top-right',
+            autoClose : 5000
+        })
+    }
     // when user click in try again part 
     const resendEmailHandler = ()=>{
         if(time==0){
@@ -34,16 +49,22 @@ export const OTPcard = () => {
     }
     //on click handler 
     const onclickHandler = async ()=>{
+        console.log('otp from client side is : ',otp);
         const res = await axios.post ('http://localhost:3000/api/auth/verify',{
             f_id : localStorage.getItem('facultyId'),
-            otp : 'entered otp'
+            otp : otp
         })
+        console.log(res)
         if(res.data.status==200){
-            console.log('otp verified')
+            success();
+            setotp(null);
+            router.push('/auth/login');
+            console.log('verified');
             return true;
         }
         else{
-            console.log('otp not verified');
+            failure();
+            console.log('invalid otp');
             return false;
         }
     }
@@ -58,7 +79,7 @@ export const OTPcard = () => {
                     We have sent an OTP on your registered mail id 
                 </div>
                 <div>
-                    < OTPbox />
+                    < OTPbox setotp={setotp} />
                 </div>
                 <div className= {` text-sm text-center text-slate-700  hover:cursor-pointer ${time==0? 'hover:text-blue-500 hover:underline hover:underline-offset-1' : null}` }
                     onClick={()=>resendEmailHandler()}
@@ -66,7 +87,7 @@ export const OTPcard = () => {
                     Try again in {time>=10?`00:00:${time}`: `00:00:0${time}`}
                 </div>
                 <button className="bg-blue-500 h-12 rounded-md text-white hover:bg-blue-600"
-                onClick={()=>{onclickHandler}}
+                onClick={onclickHandler}
                 >
                     VERIFY
                 </button>

@@ -123,7 +123,7 @@ export const Register = () => {
     const today = date.getDate;
     const res = await axios.post(`http://localhost:3000/api/send-email`, {
       email: credentials.mail,
-      subject: "Internship Offer Letter",
+      subject: "Verification OTP",
       message: 
       `<html>
   <body style="font-family: 'Times New Roman', Times, serif; background-color: #f9f9f9; margin: 0; padding: 0;">
