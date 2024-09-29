@@ -58,7 +58,7 @@ export const OTPcard = () => {
         if(res.data.status==200){
             success();
             setotp(null);
-            router.push('/auth/login');
+            router.push('/dashboard');
             console.log('verified');
             return true;
         }

@@ -1,5 +1,6 @@
 import prisma from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from 'jsonwebtoken'
 
 export async function POST(req: NextRequest) {
     const { f_id, otp } = await req.json();
@@ -9,13 +10,13 @@ export async function POST(req: NextRequest) {
         console.log('Received f_id from client: ', f_id); // clearer logging
 
         // Find the user by faculty ID
-        const res = await prisma.user.findFirst({
+        const user = await prisma.user.findFirst({
             where: {
                 facultyId: f_id
             }
         });
 
-        if (!res) {
+        if (!user) {
             return NextResponse.json({
                 message: 'User not found',
                 status: 404
@@ -23,26 +24,39 @@ export async function POST(req: NextRequest) {
         }
 
         // Log the OTP from the database for verification
-        console.log('Stored OTP in database: ', res.verifyOTP); // clearer debugging
+        console.log('Stored OTP in database: ', user.verifyOTP); // clearer debugging
 
         // Verify the OTP (converting both to strings if necessary)
-        if (String(otp) === String(res.verifyOTP)) {
+        if (String(otp) === String(user.verifyOTP)) {
             // Update user verification status
             await prisma.user.update({
                 where: {
                     facultyId: f_id
                 },
                 data: {
-                    is_verified: true
+                    isVerified : true 
                 }
             });
 
-            console.log('User verified successfully'); // logging success
+            console.log('User verified successfully'); 
+            //sign the jwt 
+            const token = jwt.sign({
+                facultyId : user.facultyId,
+                name : user.name,
+                id : user.id
+            },process.env.NEXT_PUBLIC_JWT_SECRET || "");
 
-            return NextResponse.json({
+            const response =  NextResponse.json({
                 message: "User verified successfully",
                 status: 200
             });
+            response.cookies.set('token',token,{
+                path: '/',
+                httpOnly: true, 
+                secure: process.env.NODE_ENV === 'production', // true in production, false in development
+                maxAge: 60 * 60 
+            });
+            return response;
         }
 
         // If OTP doesn't match

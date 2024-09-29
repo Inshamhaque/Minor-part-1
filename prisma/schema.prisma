@@ -8,11 +8,13 @@ datasource db {
 }
 
 model User {
-  id          Int     @id @default(autoincrement())
-  name        String
-  mail        String
-  facultyId   String  @unique
-  password    String
-  verifyOTP   String?
-  is_verified Boolean @default(false)
+  id         Int     @id @default(autoincrement())
+  name       String
+  mail       String  @unique
+  facultyId  String  @unique
+  password   String
+  verifyOTP  String?
+  isVerified Boolean @default(false)
+  User_A     User[]  @relation("UserContacts")
+  User_B     User[]  @relation("UserContacts")
 }
