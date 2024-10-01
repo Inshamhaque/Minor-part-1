@@ -4,10 +4,33 @@ import logo from '@/assets/amu_logo.png'
 import './login.css'
 import Image from 'next/image'
 import React, {useState} from 'react';
+import axios from 'axios';
 
 function Login() {
     const [Username, setUsername] = useState('');
     const [Password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('/api/auth/login', { username: Username, password: Password });
+            console.log(response.data);
+            setErrorMessage(''); 
+        } 
+        
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response && error.response.data) {
+                    setErrorMessage(error.response.data.message);
+                } else {
+                    setErrorMessage('An unexpected error occurred.');
+                }
+            } else {
+                setErrorMessage('Something went wrong, try again.');
+            }
+        }
+    };
+    
 
     const updateInitials = () => {
         setUsername('');
