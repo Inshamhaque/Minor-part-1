@@ -1,35 +1,52 @@
-"use client";  // Add this line at the very top
+'use client'
 
 import logo from '@/assets/amu_logo.png'
 import './login.css'
 import Image from 'next/image'
 import React, {useState} from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 function Login() {
-    const [Username, setUsername] = useState('');
+    const [facultyId, setfacultyId] = useState('');
     const [Password, setPassword] = useState('');
+    const base_url = process.env.NEXT_PUBLIC_BASE_URL;
+    const router = useRouter();
+
 
     const updateInitials = () => {
-        setUsername('');
+        setfacultyId('');
         setPassword('');
     }
-
+    const OnClickHandler = async()=>{
+        const res = await axios.post(`${base_url}/api/auth/login`,{
+            facultyId,
+            password : Password
+        })
+        console.log(res.status);
+        if(res.status==200){
+            toast.success('user authenticated successfullly');
+            router.push('/dashboard')
+        }
+        else{
+            toast.error('incorrect password');
+        }
+    }
     return (
-            // <div className='pt-5 mt-20'>
-            
-            <div className="container mx-auto px-4 sm:px-5 lg:px-6 max-w-lg w-full">
+            <div className="container max-h-screen px-4 sm:px-5 lg:px-6 max-w-lg w-full">
                 <h2 className="text-lg sm:text-xl lg:text-2xl font-bold pt-4 text-center">LOGIN</h2>
                 <hr className="header-line my-3 sm:my-4" />
                 <div className="credentials space-y-3">
                     <div>
-                        <label htmlFor="username" className="block text-xs sm:text-sm">Username</label>
+                        <label htmlFor="username" className="block text-xs sm:text-sm">FacultyId</label>
                         <input 
                             type="text" 
-                            id="username" 
-                            placeholder="name@zhcet.ac.in" 
+                            id="Facultyid" 
+                            placeholder="" 
                             className="w-full mt-1 px-3 py-1 border bg-gray-100 rounded-lg "  
-                            value={Username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            value={facultyId}
+                            onChange={(e) => setfacultyId(e.target.value)}
                         />
                     </div>
                     <div>
@@ -43,7 +60,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button onClick={updateInitials} className="button w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</button>
+                    <button onClick={OnClickHandler} className="button w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Login</button>
                 </div>
                 <hr className="header-line2 my-3 sm:my-4" />
                 <div className="links flex flex-col sm:flex-row justify-between text-xs sm:text-sm">

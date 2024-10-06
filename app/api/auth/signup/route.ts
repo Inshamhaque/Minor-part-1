@@ -6,8 +6,8 @@ import { registerSchema } from "@/zodfile/schema";
 import { stat } from "fs";
 export async function POST(req : NextRequest){
     const body = await req.json();
-    const { mail, password, facultyId, name } = body;
-    const OTP = (Math.floor(Math.random() * 100000) + 100000).toString().substring(1);
+    const { password, facultyId, name } = body;
+    const OTP = (Math.floor(Math.random() * 100000) + 99999).toString().substring(1);
     //creating a row for the user 
     try{
         //TODO: backend zod implementation for name, password, mail, facultyId etc...
@@ -27,10 +27,10 @@ export async function POST(req : NextRequest){
         const hashedPassword = await bcrypt.hash(password,10);
         const user = await prisma.user.create({
             data : {
-                mail,
                 password : hashedPassword,
                 facultyId,
                 name,
+                mail : "",
                 verifyOTP : OTP
             }
         });

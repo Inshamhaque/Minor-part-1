@@ -10,11 +10,11 @@ datasource db {
 model User {
   id         Int     @id @default(autoincrement())
   name       String
-  mail       String  @unique
+  mail       String
   facultyId  String  @unique
   password   String
   verifyOTP  String?
   isVerified Boolean @default(false)
-  User_A     User[]  @relation("UserContacts")
-  User_B     User[]  @relation("UserContacts")
+  User_A     User[]  @relation("userContact")
+  User_B     User[]  @relation("userContact")
 }
