@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './chat.css';
-
+import { toast, ToastContainer } from 'react-toastify';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ChatApp = () => {
     const [selectedPerson, setSelectedPerson] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -121,13 +122,41 @@ const ChatApp = () => {
     );
 };
 const Popupcard = () => {
+    const [mail,setmail] = useState('');
+    const onClickHandler = async()=>{
+        try{
+            const res = await axios.post(`${BASE_URL}/api/send-email`,{
+                subject : "Email Verification",
+                email : mail,
+                message : `
+                <div style="font-family: Arial, sans-serif; padding: 20px;">
+                    <h2>Email Verification</h2>
+                    <p>Hi,</p>
+                    <p>Please verify your email by clicking the link below:</p>
+                    <a href="${BASE_URL}/verify-email?email=${mail}" 
+                        style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">
+                        Verify Email
+                    </a>
+                    <p>Thank you for using our service!</p>
+                </div>
+            `
+
+            })
+        }
+        catch(e){
+            return toast.error('some error occurred');
+        }
+    }
     return(
         <div className='absolute w-screen h-screen flex justify-center items-center backdrop-blur overflow-hidden'>
             <div className='flex flex-col space-y-5 p-10 w-1/3 border rounded-lg border-black'>
                 <h1 className='text-center font-semibold text-lg w-full'>Verify your Mail</h1>
-                <input type="text" placeholder='Enter your mail' className='border p-3 w-full ' />
+                <input type="text" placeholder='Enter your mail' className='border p-3 w-full' onChange={(e)=>{
+                    setmail(e.target.value);
+                }} />
                 <button className='bg-blue-500 border rounded-lg text-white hover:cursor-pointer hover:bg-blue-600 w-full p-3'>Send OTP</button>
             </div>
+            < ToastContainer />
         </div>
     )
 }

@@ -57,11 +57,9 @@ export async function POST(req:NextRequest){
         }
         const token = jwt.sign({
             //@ts-ignore
-            facultyId : existing_user.facultyId,
+            facultyId : facultyId,
             //@ts-ignore
             name : existing_user.name,
-            //@ts-ignore
-            id : existing_user.id
         },process.env.NEXT_PUBLIC_JWT_SECRET || "");
 
         const response =  NextResponse.json({
