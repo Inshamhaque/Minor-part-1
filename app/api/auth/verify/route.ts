@@ -46,12 +46,15 @@ export async function POST(req: NextRequest) {
         //@ts-ignore
         if (String(otp) === String(user.verifyOTP)) {
             // Update user verification status
-            //update in redis as well... but is it really required
-            const userdata = await redis.get(user.facultyId);
-            const userObject = JSON.parse(userdata);
-            userObject.isverified = true;
-            const updateduser = JSON.stringify(userObject);
-            await redis.set(user.facultyId,updateduser);
+            //update in redis as well... but is it really required  ??    
+            await redis.set(f_id,{
+                mail : user.mail,
+                password : user.password,
+                name : user.name,
+                verifyOTP : user.verifyOTP,
+                isVerified : true ,
+                contacts : user.contacts
+            })
             //update in primary db 
             await prisma.user.update({
                 where: {
@@ -75,7 +78,7 @@ export async function POST(req: NextRequest) {
             },process.env.NEXT_PUBLIC_JWT_SECRET||'');
 
             const response =  NextResponse.json({
-                message: "User login successfully",
+                message: "User verified successfully",
             },{
                 status : 200
             });
