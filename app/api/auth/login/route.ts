@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { NextRequest, NextResponse } from "next/server";
 import client from '@/prisma/index'
 import bcrypt from 'bcrypt';
@@ -16,19 +17,18 @@ export async function POST(req:NextRequest){
         // first check in redis 
         var redis_flag = 1;
         var existing_user = await redis.get(facultyId);
+        // console.log('from redis : ',existing_user.isVerified);
         if(!existing_user){
             existing_user = await client.user.findUnique({
                 where : {
                     facultyId : facultyId
                 }
-            })
+            }) 
             redis_flag  = 0;
-            //@ts-ignore
             var dbPassword = existing_user?.password;
         }
-        //@ts-ignore
+        //@ts-ignore 
         var dbPassword  = existing_user?.password;
-        console.log("from redis: ",dbPassword);// feel the difference in this
         if(!existing_user){
             return NextResponse.json({
                 msg : "Damn , user does not exists"
@@ -51,7 +51,8 @@ export async function POST(req:NextRequest){
                 //@ts-ignore
                 name : existing_user?.name,
                 //@ts-ignore
-                verifyotp : existing_user?.verifyOTP,
+                verifyOTP : existing_user?.verifyOTP,
+                isVerified : existing_user?.isVerified,
                 contacts : Array()
             })
         }
@@ -60,10 +61,12 @@ export async function POST(req:NextRequest){
             facultyId : facultyId,
             //@ts-ignore
             name : existing_user.name,
+            //@ts-ignore
+            isverified : existing_user.isVerified
         },process.env.NEXT_PUBLIC_JWT_SECRET || "");
 
         const response =  NextResponse.json({
-            message: "User verified successfully",
+            message: "User login successfully",
         },{
             status : 200
         });

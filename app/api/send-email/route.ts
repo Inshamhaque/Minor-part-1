@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         //@ts-ignore
         const data  = await redis.get(payload.facultyId);
         //@ts-ignore
-        const otp = data?.verifyotp;
+        const otp = data?.verifyOTP;
         //@ts-ignore
         const name = data?.name;
          

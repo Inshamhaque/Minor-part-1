@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './chat.css';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { OTPbox } from '@/components/OTPbox';
+import { getcookie } from '@/actions/get-cookie-value';
+// import { useCookies } from 'next-client-cookies'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ChatApp = () => {
     const [selectedPerson, setSelectedPerson] = useState(null);
@@ -23,8 +27,18 @@ const ChatApp = () => {
                 console.error("Error fetching health check:", error);
             }
         };
-
         fetchHealthCheck();
+        const get_cookie_value = async()=>{
+            const payload = await getcookie();
+            if(payload.isverified){
+                return setverified(true);
+            }
+            return setverified(false);
+        }
+        get_cookie_value();
+        
+
+        // window.location.reload(false);
     }, []);
 
     const openChat = (person) => {
@@ -123,39 +137,62 @@ const ChatApp = () => {
 };
 const Popupcard = () => {
     const [mail,setmail] = useState('');
-    const onClickHandler = async()=>{
+    const [boxvisible,setboxvisible] = useState(false);
+    const [otp,setotp]  = useState(0);
+    const onClickHandler = async(e)=>{
         try{
             const res = await axios.post(`${BASE_URL}/api/send-email`,{
                 subject : "Email Verification",
                 email : mail,
-                message : `
-                <div style="font-family: Arial, sans-serif; padding: 20px;">
-                    <h2>Email Verification</h2>
-                    <p>Hi,</p>
-                    <p>Please verify your email by clicking the link below:</p>
-                    <a href="${BASE_URL}/verify-email?email=${mail}" 
-                        style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">
-                        Verify Email
-                    </a>
-                    <p>Thank you for using our service!</p>
-                </div>
-            `
 
             })
+            if(!res){
+                return toast.error('Error sending mail');
+            }
+            setboxvisible(true);
+            return toast.success('Mail sent successfully');
+
         }
         catch(e){
             return toast.error('some error occurred');
         }
     }
+    const verifyButtonHandler = async()=>{
+        try{
+            const res = await axios.post(`${BASE_URL}/api/auth/verify`,{
+                otp
+            })
+            if(!res){
+                return toast.error('some error while verification, try again');
+            }
+            toast.success('Verification successfull');
+            window.location.reload(false);
+            return;
+        }
+        catch(e){
+            console.log('there was some error : ',e);
+            return toast.error('Some unexpected error occurred.');
+        }
+    }
     return(
-        <div className='absolute w-screen h-screen flex justify-center items-center backdrop-blur overflow-hidden'>
+        <div className='flex flex-col absolute w-screen h-screen flex justify-center items-center backdrop-blur overflow-hidden'>
             <div className='flex flex-col space-y-5 p-10 w-1/3 border rounded-lg border-black'>
                 <h1 className='text-center font-semibold text-lg w-full'>Verify your Mail</h1>
                 <input type="text" placeholder='Enter your mail' className='border p-3 w-full' onChange={(e)=>{
                     setmail(e.target.value);
                 }} />
-                <button className='bg-blue-500 border rounded-lg text-white hover:cursor-pointer hover:bg-blue-600 w-full p-3'>Send OTP</button>
+                <button onClick={(e)=>{onClickHandler(e)}}  className='bg-blue-500 border rounded-lg text-white hover:cursor-pointer hover:bg-blue-600 w-full p-3'>Send OTP</button>
+                {boxvisible && 
+                <div className='flex-col space-y-5 justify-center items-center'>
+                     <OTPbox setotp={setotp} />
+                     <button className="bg-blue-500 h-12 rounded-md text-white hover:bg-blue-600"
+                    onClick={verifyButtonHandler}
+                    >
+                        VERIFY
+                    </button>
+                </div>}
             </div>
+            
             < ToastContainer />
         </div>
     )
