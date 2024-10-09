@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import './chat.css';
 import { toast, ToastContainer } from 'react-toastify';
@@ -9,6 +10,7 @@ import { getcookie } from '@/actions/get-cookie-value';
 // import { useCookies } from 'next-client-cookies'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const ChatApp = () => {
+    const router = useRouter();
     const [selectedPerson, setSelectedPerson] = useState(null);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -65,18 +67,28 @@ const ChatApp = () => {
         }
     };
 
+    const handleProfileClick = () => {
+        router.push('/profile')
+    }
+
     return (
         <div className="flex flex-col h-screen max-w-screen bg-gray-100">
             <div className="flex flex-row h-full shadow-lg">
                 {/* Contacts Sidebar */}
                 <aside className="w-1/4 bg-white border-r border-gray-300 p-4">
                     {/* Sidebar Header */}
-                    <div className="text-2xl font-bold text-center text-blue-600 mb-4">
-                        AMU Connect
+                    <div className="text-2xl font-bold text-center text-blue-600 mb-4 flex items-center justify-center">
+                        AMU Connect 
                     </div>
+
                     {/* make this one scrollable so that more contacts can be added */}
                     <div className=''>
                         <div className="flex justify-between items-center mb-4">
+                        <div className="p-2 rounded-full hover:bg-gray-200 cursor-pointer" onClick = {handleProfileClick}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 12c-3.866 0-7 3.134-7 7a1 1 0 1 0 2 0c0-2.761 2.239-5 5-5s5 2.239 5 5a1 1 0 1 0 2 0c0-3.866-3.134-7-7-7Z"/>
+                            </svg>
+                        </div>
                             <h1 className="text-xl font-semibold text-gray-800">Chats</h1>
                             <div className="p-2 rounded-full hover:bg-gray-200 cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
