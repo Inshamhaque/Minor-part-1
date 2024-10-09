@@ -33,6 +33,7 @@ function Login() {
     
 
     const updateInitials = () => {
+        handleLogin();
         setUsername('');
         setPassword('');
     }

@@ -50,6 +50,7 @@ export async function POST(req : NextRequest){
     }
     // handling the errors 
     catch(error : any ){
+        console.log("Error: ", error);
         return NextResponse.json({
             message : error.message,
             status : 500
