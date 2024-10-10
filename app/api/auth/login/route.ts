@@ -53,7 +53,7 @@ export async function POST(req:NextRequest){
                 //@ts-ignore
                 verifyOTP : existing_user?.verifyOTP,
                 isVerified : existing_user?.isVerified,
-                contacts : Array()
+                department : existing_user?.department,
             })
         }
         const token = jwt.sign({

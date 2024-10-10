@@ -15,6 +15,5 @@ model User {
   password   String
   verifyOTP  String?
   isVerified Boolean @default(false)
-  User_A     User[]  @relation("userContact")
-  User_B     User[]  @relation("userContact")
+  department String
 }

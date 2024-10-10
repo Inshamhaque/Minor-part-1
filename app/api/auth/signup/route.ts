@@ -6,7 +6,7 @@ import { registerSchema } from "@/zodfile/schema";
 import { stat } from "fs";
 export async function POST(req : NextRequest){
     const body = await req.json();
-    const { password, facultyId, name } = body;
+    const { password, facultyId, name, department } = body;
     const OTP = (Math.floor(Math.random() * 100000) + 99999).toString().substring(1);
     //creating a row for the user 
     try{
@@ -31,6 +31,7 @@ export async function POST(req : NextRequest){
                 facultyId,
                 name,
                 mail : "",
+                department,
                 verifyOTP : OTP
             }
         });

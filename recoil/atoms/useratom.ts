@@ -1,7 +1,10 @@
 import { atom } from "recoil";
 interface UserState{
-    facultyId : number,
-    name : string,
+    name : string;
+    email  : string;
+    department : string;
+    facultyid : string;
+    designation : string;
 }
 
 export const userState = atom({
