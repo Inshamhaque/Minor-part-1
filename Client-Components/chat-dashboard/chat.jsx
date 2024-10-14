@@ -35,7 +35,7 @@ const ChatApp = ({ id }) => {
         const get_cookie_value = async()=>{
             const payload = await getcookie();
             if(payload.isverified){
-                return setverified(true);
+                setverified(true);
             }
             setuser(payload);
             console.log('from recoil:',user);
@@ -116,11 +116,6 @@ const ChatApp = ({ id }) => {
                 {/* Chat Section */}
                 <section className="w-3/4 flex flex-col h-screen overflow-hidden">
                     <div className="bg-gray-100 p-4 text-center text-lg font-semibold border-b border-gray-300">
-                    <div className="p-2 rounded-full hover:bg-gray-200 cursor-pointer" onClick = {handleProfileClick}>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 12c-3.866 0-7 3.134-7 7a1 1 0 1 0 2 0c0-2.761 2.239-5 5-5s5 2.239 5 5a1 1 0 1 0 2 0c0-3.866-3.134-7-7-7Z"/>
-                            </svg>
-                        </div>
                         {id ? `Chat with ${id}` : 'Select a contact'}
                     </div>
 
