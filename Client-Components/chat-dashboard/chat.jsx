@@ -7,18 +7,20 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { OTPbox } from '@/components/OTPbox';
 import { getcookie } from '@/actions/get-cookie-value';
+import { useRecoilState } from 'recoil';
+import { userState } from '@/recoil/atoms/useratom';
 // import { useCookies } from 'next-client-cookies'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const ChatApp = () => {
+const ChatApp = ({ id }) => {
     const router = useRouter();
     const [selectedPerson, setSelectedPerson] = useState(null);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [verified,setverified] = useState(0);
+    const [user,setuser] = useRecoilState(userState)
 
     
-    const contacts = ['Person1', 'Person2', 'Person3', 'Person4', 'Person5'];
-
+    
     // Fetching health check on mount
     useEffect(() => {
         const fetchHealthCheck = async () => {
@@ -35,7 +37,10 @@ const ChatApp = () => {
             if(payload.isverified){
                 return setverified(true);
             }
+            setuser(payload);
+            console.log('from recoil:',user);
             return setverified(false);
+
         }
         get_cookie_value();
         
@@ -116,7 +121,7 @@ const ChatApp = () => {
                                 <path d="M12 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 12c-3.866 0-7 3.134-7 7a1 1 0 1 0 2 0c0-2.761 2.239-5 5-5s5 2.239 5 5a1 1 0 1 0 2 0c0-3.866-3.134-7-7-7Z"/>
                             </svg>
                         </div>
-                        {selectedPerson ? `Chat with ${selectedPerson}` : 'Select a contact'}
+                        {id ? `Chat with ${id}` : 'Select a contact'}
                     </div>
 
                     <div className="flex-1 p-4 overflow-y-auto bg-white">
@@ -146,9 +151,9 @@ const ChatApp = () => {
                     </div>
                 </section>
             </div>
-            {!verified?
+            {/* {!verified?
                 < Popupcard />
-            :null}
+            :null} */}
         </div>
     );
 };

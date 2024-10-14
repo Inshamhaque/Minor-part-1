@@ -2,11 +2,15 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { userState } from "@/recoil/atoms/useratom";
+import { useRecoilValue } from "recoil";
 export const ContactList = ()=>{
     const router = useRouter();
     const [selectedPerson, setSelectedPerson] = useState(null);
-    const [Messages,setMessages] = useState([])
-    const contacts = ['Person1', 'Person2', 'Person3', 'Person4', 'Person5'];
+    const [Messages,setMessages] = useState([]);
+    const user = useRecoilValue(userState);
+    console.log('from recoil in the sideClient: ', user);
+    // const contacts = ['Person1', 'Person2', 'Person3', 'Person4', 'Person5'];
     const handleProfileClick = () => {
         router.push('/profile')
     }
@@ -24,8 +28,11 @@ export const ContactList = ()=>{
                 { sender: 'You', text: 'I am good, thanks!' }
             ];
         }
+        //@ts-ignore
         setMessages(initialMessages);
     };
+    const dep = user.department;
+    
 
     return(
         <aside className=" bg-white border-r border-gray-300 p-4">
@@ -49,15 +56,32 @@ export const ContactList = ()=>{
                     </svg>
                 </div>
             </div>
-            {contacts.map(contact => (
-                <div 
-                    key={contact} 
-                    onClick={() => openChat(contact)}
-                    className="p-4 mb-2 rounded-lg bg-gray-100 hover:bg-blue-100 hover:text-blue-700 cursor-pointer transition duration-300"
-                >
-                    {contact}
+            <div className="flex-col space-y-3 transition-smooth">
+                <div className="flex justify-between items-center hover:bg-slate-200 rounded-lg p-2">
+                    <h1>University Announcements</h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+
                 </div>
-            ))}
+                <div className="flex justify-between items-center hover:bg-slate-200 rounded-lg p-2 hover:cursor-pointer"
+                onClick={()=>{
+                    router.push(`/dashboard/${dep.split(' ')[0]}`);
+                }}>
+                    <h1>{user.department}</h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </div>
+                <div className="p-2">
+                    <h1 className="text-slate-600 font-sans">Frequently contacted</h1>
+                    <div className="flex-col space-y-2 p-3">
+                        <div className="hover:bg-slate-200 rounded-lg p-1">22cob101</div>
+                        <div className="hover:bg-slate-200 rounded-lg p-1">22cob101</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </aside>
     )

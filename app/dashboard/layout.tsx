@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} w-screen grid grid-cols-4 bg-gray-100 overflow-x-hidden`}>
-        <div className="col-span-1">
+        <div className="col-span-1 h-screen">
             < ContactList />
         </div>
         {children}

@@ -62,7 +62,8 @@ export async function POST(req:NextRequest){
             //@ts-ignore
             name : existing_user.name,
             //@ts-ignore
-            isverified : existing_user.isVerified
+            isverified : existing_user.isVerified,
+            department : existing_user.department
         },process.env.NEXT_PUBLIC_JWT_SECRET || "");
 
         const response =  NextResponse.json({

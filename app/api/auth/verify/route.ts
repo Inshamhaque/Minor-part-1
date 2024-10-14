@@ -53,7 +53,8 @@ export async function POST(req: NextRequest) {
                 name : user.name,
                 verifyOTP : user.verifyOTP,
                 isVerified : true ,
-                contacts : user.contacts
+                contacts : user.contacts,
+                department : user.department
             })
             //update in primary db 
             await prisma.user.update({
@@ -69,12 +70,14 @@ export async function POST(req: NextRequest) {
 
             console.log('User verified successfully'); 
             //reset the cookie with new jwt payload 
-            const new_token = jwt.sign({
+            const new_token = jwt.sign({ 
                 //@ts-ignore
                 facultyId : payload?.facultyId,
                 isverified : true,
                 //@ts-ignore
-                name : payload?.name
+                department : payload?.deparment
+                name : payload?.name,
+                
             },process.env.NEXT_PUBLIC_JWT_SECRET||'');
 
             const response =  NextResponse.json({

@@ -7,7 +7,7 @@ const redis = new Redis({
   url: 'https://romantic-kodiak-24878.upstash.io',
   token: 'AWEuAAIjcDFmNWI2ZTQ3OWRhZjQ0YzI1OTdlZTcwM2I2Y2Q3ZDNhYXAxMA',
 })
-async function fetchUserDetails({ facultyid } : {facultyid : String}){
+export async function fetchUserDetails({ facultyid } : {facultyid : String}){
     const data = await redis.get(String(facultyid));
     return data;
 
