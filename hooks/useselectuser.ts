@@ -1,0 +1,1 @@
+// create a hook that can be used in both the contact list component as well as the chat component

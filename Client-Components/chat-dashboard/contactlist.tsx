@@ -7,20 +7,11 @@ import { getContact } from "@/actions/get-contact-by-dep";
 
 export const ContactList = () => {
     const router = useRouter();
-    const [selectedPerson, setSelectedPerson] = useState(null);
     const [Messages, setMessages] = useState([]);
     const user = useRecoilValue(userState);
     const [depContacts, setdepContacts] = useState([]);
+    //@ts-ignore
     const department = user.department;
-
-    const handleDepClick = () => {
-        const fetchContacts = async () => {
-            const contacts = await getContact({ department });
-            console.log('response is : ', contacts);
-            setdepContacts(contacts.data); // Change if your API response structure is different
-        };
-        fetchContacts();
-    };
 
     console.log('from recoil in the sideClient: ', user);
 
@@ -41,13 +32,13 @@ export const ContactList = () => {
                         </svg>
                     </div>
                 </div>
-                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 hover:cursor-pointer" onClick={handleDepClick}>
+                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 hover:cursor-pointer">
                     <h1>University Announcements</h1>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
                 </div>
-                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 hover:cursor-pointer" onClick={handleDepClick}>
+                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 hover:cursor-pointer" >
                     <h1>{department}</h1>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -75,7 +66,8 @@ const Profile = () => {
     const user = useRecoilValue(userState);
     const logout = () => {
         document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        console.log('it is removed')
+        console.log('it is removed');
+        // window.location.reload(false);
     };
 
     return (
@@ -87,6 +79,7 @@ const Profile = () => {
                     </svg>
                 </div>
                 <div>
+                    
                     <div className="font-semibold text-gray-800">{user.name}</div>
                     <div className="flex items-center space-x-2 text-green-600">
                         <div className="rounded-full h-2 w-2 bg-green-500"></div>

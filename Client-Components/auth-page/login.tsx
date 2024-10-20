@@ -7,6 +7,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
     const [facultyId, setfacultyId] = useState('');
@@ -25,6 +26,9 @@ function Login() {
             password : Password
         })
         console.log(res.status);
+        if(res.status==401){
+            return toast.error('incorrect credentials');
+        }
         if(res.status==200){
             toast.success('user authenticated successfullly');
             router.push('/dashboard')
@@ -67,6 +71,7 @@ function Login() {
                     <a className="forgot inline-block px-4 py-2 rounded-full font-bold text-black hover:bg-gray-100 transition border py-1 sm:py-0" href="#">FORGOT PASSWORD</a>
                     <a href="/auth/register" className="register inline-block px-4 py-2 rounded-full font-bold text-black hover:bg-gray-100 transition py-1 sm:py-0">REGISTER</a>
                 </div>
+                <ToastContainer />
             </div>
         
     );
