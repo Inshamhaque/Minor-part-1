@@ -7,7 +7,9 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { useSetRecoilState } from 'recoil';
 import "react-toastify/dist/ReactToastify.css";
+import { userState } from '@/recoil/atoms/useratom';
 
 function Login() {
     const [facultyId, setfacultyId] = useState('');
@@ -31,6 +33,8 @@ function Login() {
         }
         if(res.status==200){
             toast.success('user authenticated successfullly');
+            // set recoil state here only
+
             router.push('/dashboard')
         }
         else{

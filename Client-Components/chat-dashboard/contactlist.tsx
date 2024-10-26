@@ -2,18 +2,19 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { userState } from "@/recoil/atoms/useratom";
-import { useRecoilValue } from "recoil";
-import { getContact } from "@/actions/get-contact-by-dep";
+import { SetterOrUpdater, useRecoilValue } from "recoil";
 
-export const ContactList = () => {
+export const ContactList = ({ chatname, setchatname } : {
+    chatname : string,
+    setchatname : SetterOrUpdater<string> 
+} ) => {
     const router = useRouter();
     const [Messages, setMessages] = useState([]);
     const user = useRecoilValue(userState);
-    const [depContacts, setdepContacts] = useState([]);
-    //@ts-ignore
-    const department = user.department;
+    const [chosen, setchosen] = useState(''); 
+    const department = user?.department || 'General';
 
-    console.log('from recoil in the sideClient: ', user);
+    console.log('from recoil in the sideClient i.e department is this : ', department);
 
     return (
         <aside className="bg-slate-200 flex flex-col border-r border-gray-300 p-4 h-screen">
@@ -24,7 +25,7 @@ export const ContactList = () => {
 
             {/* Scrollable Contacts Section */}
             <div className="flex-grow overflow-y-auto space-y-3">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-4" onClick={() => setchatname('University Announcements')}>
                     <h1 className="text-xl font-semibold text-gray-800">Chats</h1>
                     <div className="p-2 rounded-full hover:bg-gray-200 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -32,30 +33,34 @@ export const ContactList = () => {
                         </svg>
                     </div>
                 </div>
-                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 hover:cursor-pointer">
+                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 cursor-pointer" onClick={() => setchatname('University Announcements')}>
                     <h1>University Announcements</h1>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
                 </div>
-                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 hover:cursor-pointer" >
+                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 cursor-pointer" onClick={() => setchatname(department)}>
                     <h1>{department}</h1>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
                 </div>
 
+                {/* Frequently Contacted Section */}
                 <div className="p-2">
                     <h1 className="text-slate-600 font-sans">Frequently contacted</h1>
                     <div className="flex-col space-y-2 p-3">
-                        <div className="hover:bg-slate-200 rounded-lg p-1">22cob101</div>
-                        <div className="hover:bg-slate-200 rounded-lg p-1">22cob101</div>
+                        {['22cob101', '22cob102'].map((contact, index) => (
+                            <div key={index} className="hover:bg-slate-200 rounded-lg p-1 cursor-pointer" onClick={() => setchatname(contact)}>
+                                {contact}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
-        {/* profile section */}
-            <div className="relative flex-none p-3 text-black  fixed bottom-0 w-full">
+            {/* Profile Section */}
+            <div className="relative flex-none p-3 text-black fixed bottom-0 w-full">
                 <Profile />
             </div>
         </aside>
@@ -66,8 +71,7 @@ const Profile = () => {
     const user = useRecoilValue(userState);
     const logout = () => {
         document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        console.log('it is removed');
-        // window.location.reload(false);
+        console.log('Cookie removed');
     };
 
     return (
@@ -79,7 +83,6 @@ const Profile = () => {
                     </svg>
                 </div>
                 <div>
-                    
                     <div className="font-semibold text-gray-800">{user.name}</div>
                     <div className="flex items-center space-x-2 text-green-600">
                         <div className="rounded-full h-2 w-2 bg-green-500"></div>
