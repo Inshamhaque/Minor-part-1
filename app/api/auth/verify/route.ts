@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
                 facultyId : payload?.facultyId,
                 isverified : true,
                 //@ts-ignore
-                department : payload?.deparment
+                department : payload?.deparment,
                 name : payload?.name,
                 
             },process.env.NEXT_PUBLIC_JWT_SECRET||'');

@@ -16,4 +16,5 @@ model User {
   verifyOTP  String?
   isVerified Boolean @default(false)
   department String
+  subscribed Json[]
 }
