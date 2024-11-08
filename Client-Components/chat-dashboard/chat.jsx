@@ -11,13 +11,14 @@ import { getcookie } from '@/actions/get-cookie-value';
 import { useRecoilState } from 'recoil';
 import { userState } from '@/recoil/atoms/useratom';
 import { ContactList } from './contactlist';
+import { useSocket } from '@/context/SocketProvider';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ChatApp = ({ id }) => {
     const router = useRouter();
-    const [messages, setMessages] = useState([]);
-    const [inputValue, setInputValue] = useState('');
+    const [message,setmessage] = useState('');
+    const { sendMessage } = useSocket();
     const [verified, setVerified] = useState(true); // todo 
     const [user, setUser] = useRecoilState(userState);
     const [selectedPerson, setSelectedPerson] = useState('');
@@ -61,12 +62,7 @@ const ChatApp = ({ id }) => {
         setMessages(initialMessages);
     };
 
-    const sendMessage = () => {
-        if (inputValue.trim()) {
-            setMessages(prevMessages => [...prevMessages, { sender: 'You', text: inputValue }]);
-            setInputValue('');
-        }
-    };
+    
 
     const handleProfileClick = () => {
         router.push('/profile');
@@ -103,7 +99,7 @@ const ChatApp = ({ id }) => {
                         <input 
                             type="text" 
                             value={inputValue} 
-                            onChange={(e) => setInputValue(e.target.value)} 
+                            onChange={(e) => setmessage(e.target.value)} 
                             placeholder="Type your message..." 
                             className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />

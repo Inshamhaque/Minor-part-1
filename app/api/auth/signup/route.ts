@@ -32,7 +32,14 @@ export async function POST(req : NextRequest){
                 name,
                 mail : "",
                 department,
-                verifyOTP : OTP
+                verifyOTP : OTP,
+                subscribed : [
+                    {
+                        department : '@56$#',
+                    },{
+                        university : '#$7860'
+                    }
+                ]
             }
         });
         if(!user){

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 // import "./globals.css";
-import { SocketProvider } from '@/context/SocketProvider'
+import { ContactList } from "@/Client-Components/chat-dashboard/contactlist";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <SocketProvider>
       <body className={`${inter.className} w-screen grid grid-cols-4 bg-gray-100 overflow-x-hidden`}>
         {children}
       </body>
-      </SocketProvider>
     </html>
   );
 }

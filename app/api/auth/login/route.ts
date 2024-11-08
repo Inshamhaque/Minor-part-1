@@ -54,6 +54,7 @@ export async function POST(req:NextRequest){
                 verifyOTP : existing_user?.verifyOTP,
                 isVerified : existing_user?.isVerified,
                 department : existing_user?.department,
+                subscribed : existing_user?.subscribed
             })
         }
         const token = jwt.sign({

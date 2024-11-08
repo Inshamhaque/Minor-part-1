@@ -33,7 +33,10 @@ export const ContactList = ({ chatname, setchatname } : {
                         </svg>
                     </div>
                 </div>
-                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 cursor-pointer" onClick={() => setchatname('University Announcements')}>
+                <div className="flex justify-between items-center hover:bg-gray-100 rounded-lg p-3 cursor-pointer" onClick={() => {
+                    
+                    router.push(`/dashboard/${id}`);
+                }}>
                     <h1>University Announcements</h1>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
