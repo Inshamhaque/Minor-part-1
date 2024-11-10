@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Client-Components/chat-dashboard/chat.jsx", "Client-Components/chat-dashboard/profile.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "Client-Components/chat-dashboard/chat.jsx", "Client-Components/chat-dashboard/profile.jsx", "server.js"],
   "exclude": ["node_modules"]
 }

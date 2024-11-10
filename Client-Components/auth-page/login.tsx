@@ -33,8 +33,6 @@ function Login() {
         }
         if(res.status==200){
             toast.success('user authenticated successfullly');
-            // set recoil state here only
-
             router.push('/dashboard')
         }
         else{

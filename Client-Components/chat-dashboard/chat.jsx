@@ -17,7 +17,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const ChatApp = ({ id }) => {
     const router = useRouter();
-    const [message,setmessage] = useState('');
+    const [message, setMessage] = useState('');
     const { sendMessage } = useSocket();
     const [verified, setVerified] = useState(true); // todo 
     const [user, setUser] = useRecoilState(userState);
@@ -38,7 +38,7 @@ const ChatApp = ({ id }) => {
                 const payload = await getcookie();
                 if (payload.isverified) setVerified(true);
                 setUser(payload);
-                console.log('from recoil:', payload);
+                // console.log('from recoil:', payload);
             } catch (error) {
                 console.error("Error fetching cookie value:", error);
             }
@@ -48,24 +48,15 @@ const ChatApp = ({ id }) => {
         getCookieValue();
     }, [setUser]);
 
-    const openChat = (person) => {
-        setSelectedPerson(person);
-        const initialMessages = person === 'Person1'
-            ? [
-                { sender: 'Person1', text: 'Hello!' },
-                { sender: 'You', text: 'Hi!' }
-              ]
-            : [
-                { sender: 'Person2', text: 'How are you?' },
-                { sender: 'You', text: 'I am good, thanks!' }
-              ];
-        setMessages(initialMessages);
-    };
-
-    
-
     const handleProfileClick = () => {
         router.push('/profile');
+    };
+
+    const handleSendMessage = () => {
+        if (message.trim()) {
+            sendMessage(message);
+            setMessage('');  // Clear the input field after sending
+        }
     };
 
     return (
@@ -85,26 +76,20 @@ const ChatApp = ({ id }) => {
 
                     {/* Chat Messages */}
                     <div className="flex-1 p-4 overflow-y-auto bg-white">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`flex mb-3 ${msg.sender === 'You' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`px-4 py-2 rounded-lg ${msg.sender === 'You' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}>
-                                    <strong>{msg.sender}:</strong> {msg.text}
-                                </div>
-                            </div>
-                        ))}
+                        MESSAGES WILL APPEAR HERE 
                     </div>
 
                     {/* Message Input */}
                     <div className="flex p-4 bg-gray-100 border-t border-gray-300">
                         <input 
                             type="text" 
-                            value={inputValue} 
-                            onChange={(e) => setmessage(e.target.value)} 
+                            value={message} 
+                            onChange={(e) => setMessage(e.target.value)} 
                             placeholder="Type your message..." 
                             className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <button 
-                            onClick={sendMessage} 
+                            onClick={handleSendMessage} 
                             className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
                         >
                             Send
@@ -114,13 +99,13 @@ const ChatApp = ({ id }) => {
             </div>
 
             {/* Popup for Verification */}
-            {!verified && <PopupCard />}
+            {/* {!verified && <PopupCard />} */}
             <ToastContainer />
         </div>
     );
 };
 
-const PopupCard = () => {
+/*const PopupCard = () => {
     const [mail, setMail] = useState('');
     const [boxVisible, setBoxVisible] = useState(false);
     const [otp, setOtp] = useState(0);
@@ -186,6 +171,6 @@ const PopupCard = () => {
             </div>
         </div>
     );
-};
+};*/
 
 export default ChatApp;

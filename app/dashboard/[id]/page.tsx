@@ -6,7 +6,7 @@ export default function({ params} : {
     }
 }){
     return(
-        <div className="max-w-screen ">
+        <div className=" ">
             <ChatApp id={params.id} />
         </div>
     )
