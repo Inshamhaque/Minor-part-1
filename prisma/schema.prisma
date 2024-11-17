@@ -8,17 +8,13 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   name       String
   mail       String
-  facultyId  String   @unique
+  facultyId  String  @unique
   password   String
   verifyOTP  String?
-  isVerified Boolean  @default(false)
+  isVerified Boolean @default(false)
   department String
-<<<<<<< HEAD
-}
-=======
   subscribed Json[]
 }
->>>>>>> c2adf9e1e59fb8169f7d8fafc11b48a13721edb0
