@@ -16,7 +16,10 @@ export async function getcookie (){
             console.error("cookie content not found");
             return null;
         }
+<<<<<<< HEAD
         console.log('cookie found successfully');
+=======
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
         return payload;
     }
     catch(e){

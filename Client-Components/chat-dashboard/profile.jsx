@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useRecoilState } from "recoil";
@@ -38,6 +39,30 @@ const Profile = () => {
         return () => {
             isMounted = false;
         };
+=======
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
+import { userState } from "@/recoil/atoms/useratom";
+
+const Profile = () => {
+    const user = useRecoilValue(userState);
+    console.log("user state from recoil is : ",userState);
+    console.log('from recoil',user);
+    const router = useRouter();
+    const [userDetails, setUserDetails] = useState(null);
+
+    useEffect(() => {
+        if (user) {
+            setUserDetails({
+                name: user.name,
+                email: user.email,
+                department: user.department,
+                facultyid: user.facultyid,
+                designation: user.designation,
+            });
+        }
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
     }, []);
 
     const clickHandler = () => {
@@ -69,6 +94,7 @@ const Profile = () => {
                 </div>
 
                 {/* User Details */}
+<<<<<<< HEAD
                 {user ? (
                     <>
                         <h1 className="text-2xl font-semibold text-center text-blue-600">
@@ -76,24 +102,45 @@ const Profile = () => {
                         </h1>
                         <p className="text-gray-700 text-center text-sm mt-1">
                             {user.email || "No Email Provided"}
+=======
+                {userDetails ? (
+                    <>
+                        <h1 className="text-2xl font-semibold text-center text-blue-600">
+                            {userDetails.name || "N/A"}
+                        </h1>
+                        <p className="text-gray-700 text-center text-sm mt-1">
+                            {userDetails.email || "No Email Provided"}
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
                         </p>
                         <div className="mt-4 space-y-2">
                             <p className="text-gray-800 text-center font-medium">
                                 Faculty ID:{" "}
                                 <span className="font-normal">
+<<<<<<< HEAD
                                     {user.facultyId || "N/A"}
+=======
+                                    {userDetails.facultyid || "N/A"}
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
                                 </span>
                             </p>
                             <p className="text-gray-800 text-center font-medium">
                                 Department:{" "}
                                 <span className="font-normal">
+<<<<<<< HEAD
                                     {user.department || "N/A"}
+=======
+                                    {userDetails.department || "N/A"}
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
                                 </span>
                             </p>
                             <p className="text-gray-800 text-center font-medium">
                                 Designation:{" "}
                                 <span className="font-normal">
+<<<<<<< HEAD
                                     {user.designation || "N/A"}
+=======
+                                    {userDetails.designation || "N/A"}
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
                                 </span>
                             </p>
                         </div>

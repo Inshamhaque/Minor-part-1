@@ -8,14 +8,20 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   name       String
+<<<<<<< HEAD
   mail       String   @unique
   facultyId  String   @unique
+=======
+  mail       String
+  facultyId  String  @unique
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
   password   String
   verifyOTP  String?
-  isVerified Boolean  @default(false)
+  isVerified Boolean @default(false)
   department String
+<<<<<<< HEAD
   // subscribed Json[]  @default([])
   messages   Message[] 
 }
@@ -33,4 +39,7 @@ model Message {
   content   String   
   timestamp DateTime @default(now())
   status    Status   @default(Undelivered)
+=======
+  subscribed Json[]
+>>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
 }
