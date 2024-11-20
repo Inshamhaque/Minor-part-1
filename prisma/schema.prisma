@@ -4,21 +4,33 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")  // Connection string to your PostgreSQL DB
 }
 
 model User {
   id         Int      @id @default(autoincrement())
   name       String
-  mail       String
+  mail       String   @unique
   facultyId  String   @unique
   password   String
   verifyOTP  String?
   isVerified Boolean  @default(false)
   department String
-<<<<<<< HEAD
+  // subscribed Json[]  @default([])
+  messages   Message[] 
 }
-=======
-  subscribed Json[]
+
+enum Status{
+  Read
+  Delivered
+  Undelivered
 }
->>>>>>> c2adf9e1e59fb8169f7d8fafc11b48a13721edb0
+model Message {
+  id        Int      @id @default(autoincrement())
+  channel   String   
+  senderId  Int      
+  sender    User     @relation(fields: [senderId], references: [id])
+  content   String   
+  timestamp DateTime @default(now())
+  status    Status   @default(Undelivered)
+}

@@ -1,9 +1,13 @@
-html, body {
+.body{
+  z-index: 99999;
+}
+/* html, body {
   height: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -124,3 +128,7 @@ body {
 .chat-input button:hover {
   background-color: #0056b3;
 }
+/* aims at controlling the unnecessary next-portal which appears as overlay on the screen
+.portal-content{
+  z-index: 999;
+} */ 
