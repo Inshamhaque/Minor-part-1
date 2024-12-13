@@ -58,8 +58,8 @@ const ChatApp = () => {
     };
 
     return (
-        <div className="grid grid-cols-4 h-screen w-screen">
-            <ContactList chatname={channel} setchatname={setChannel} />
+        <div className="grid grid-cols-1 md:grid-cols-4 h-screen w-screen">
+            <ContactList chatname={channel} setchatname={setChannel} className="md:col-span-1" />
             <div className="col-span-3 flex flex-col">
                 <div className="bg-gray-100 p-4 text-lg font-semibold border-b">
                     {channel.charAt(0).toUpperCase() + channel.slice(1) || 'Select a contact'}
@@ -79,15 +79,9 @@ const ChatApp = () => {
                                 className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}
                             >
                                 <div
-                                    className={`max-w-xs p-3 rounded-lg ${
-                                        isCurrentUser
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-200 text-gray-800'
-                                    }`}
+                                    className={`max-w-xs p-3 rounded-lg ${isCurrentUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
                                 >
-                                    {!isCurrentUser && (
-                                        <div className="text-sm font-semibold mb-1">{sender}</div>
-                                    )}
+                                    {!isCurrentUser && <div className="text-sm font-semibold mb-1">{sender}</div>}
                                     <div>{text.trim()}</div>
                                 </div>
                             </div>

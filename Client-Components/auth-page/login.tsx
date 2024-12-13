@@ -22,6 +22,11 @@ function Login() {
         setfacultyId('');
         setPassword('');
     }
+
+    const handleForgotPassword = () => {
+        router.push('/auth/forgot'); 
+    };
+
     const OnClickHandler = async()=>{
         const res = await axios.post(`${base_url}/api/auth/login`,{
             facultyId,
@@ -70,7 +75,12 @@ function Login() {
                 </div>
                 <hr className="header-line2 my-3 sm:my-4" />
                 <div className="links flex flex-col sm:flex-row justify-between text-xs sm:text-sm">
-                    <a className="forgot inline-block px-4 py-2 rounded-full font-bold text-black hover:bg-gray-100 transition border py-1 sm:py-0" href="#">FORGOT PASSWORD</a>
+                <button 
+    onClick={handleForgotPassword} 
+    className="forgot inline-block px-4 py-2 rounded-full font-bold text-black hover:bg-gray-100 transition border py-1 sm:py-0"
+>
+    FORGOT PASSWORD
+    </button>
                     <a href="/auth/register" className="register inline-block px-4 py-2 rounded-full font-bold text-black hover:bg-gray-100 transition py-1 sm:py-0">REGISTER</a>
                 </div>
                 <ToastContainer />
