@@ -56,6 +56,18 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         []
     );
 
+    // Receive initial messages when joining a channel
+    const onInitialMessagesReceive = useCallback(
+        (channel: string, receivedMessages: string[]) => {
+            console.log(`Initial messages for channel [${channel}]:`, receivedMessages);
+            setMessages((prev) => ({
+                ...prev,
+                [channel]: receivedMessages,
+            }));
+        },
+        []
+    );
+
     useEffect(() => {
         const _socket = io('http://localhost:8000');
         setSocket(_socket);
@@ -64,11 +76,15 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
             onMessageReceive(channel, message);
         });
 
+        _socket.on('initial-messages', ({ channel, messages }) => {
+            onInitialMessagesReceive(channel, messages);
+        });
+
         return () => {
             _socket.disconnect();
             setSocket(null);
         };
-    }, [onMessageReceive]);
+    }, [onMessageReceive, onInitialMessagesReceive]);
 
     return (
         <SocketContext.Provider value={{ joinChannel, sendMessage, messages }}>
