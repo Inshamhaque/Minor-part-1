@@ -2,19 +2,13 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "@/recoil/atoms/useratom";
-<<<<<<< HEAD
 import { useRouter } from "next/navigation";
-=======
->>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
 
 export const ContactList = ({ chatname, setchatname }:{
     chatname : any,
     setchatname : any
 }) => {
-<<<<<<< HEAD
     const router = useRouter();
-=======
->>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
     const user = useRecoilValue(userState);
     const [selectedChat, setSelectedChat] = useState(chatname);
     //@ts-ignore
@@ -55,11 +49,7 @@ export const ContactList = ({ chatname, setchatname }:{
                     ))}
                 </div>
             </div>
-<<<<<<< HEAD
             <div className=" bottom-0 w-full p-3 cursor-pointer">
-=======
-            <div className=" bottom-0 w-full p-3">
->>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
                 <Profile />
             </div>
         </aside>
@@ -68,15 +58,7 @@ export const ContactList = ({ chatname, setchatname }:{
 
 const Profile = () => {
     const user = useRecoilValue(userState);
-<<<<<<< HEAD
     const router = useRouter();
-=======
-    const logout = () => {
-        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        console.log('Logged out');
-    };
-
->>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
     return (
         <div className="flex items-center space-x-4 bg-white p-3 rounded-lg">
             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
@@ -84,13 +66,9 @@ const Profile = () => {
                     <path d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975..." />
                 </svg>
             </div>
-<<<<<<< HEAD
             <div onClick={()=>{
-                router.push('/profile');
+                router.push('/dashboard/profile');
             }}>
-=======
-            <div>
->>>>>>> e834d57a0be5ac862a20f2df24949813495a52b0
                 <div className="font-semibold">{user?.name}</div>
                 <div className="flex items-center text-green-600">
                     <span className="h-2 w-2 bg-green-500 rounded-full mr-1"></span> Active

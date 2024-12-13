@@ -1,64 +1,78 @@
-'use client'
-// in this we create a Socket Context and a Socket context provider, we have to implement the send message 
-// functionlaity on the socket context porvider, we will wrap this socket context provider in the entire chat part, so that
-// the socket can be used efficiently, 
-import React, { useCallback, useContext, useEffect, useState } from "react"
-import { io, Socket } from 'socket.io-client'
-interface SocketProviderprops{
-    children? : React.ReactNode
+'use client';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
+
+interface ISocketContext {
+    joinChannel: (channel: string) => void;
+    sendMessage: (channel: string, msg: string) => void;
+    messages: Record<string, string[]>;
 }
-interface ISocketContext{
-    sendMessage : (msg : string) => any;
-    messages : string[]
+
+interface SocketProviderProps {
+    children?: React.ReactNode;
 }
-const SocketContext = React.createContext<ISocketContext|null>(null);
-//we create a custom hook to send the context of Socket 
-export const useSocket = ()=>{
-    const state = useContext(SocketContext);
-    if(!state){
-        throw new Error('state is undefned');
+
+const SocketContext = React.createContext<ISocketContext | null>(null);
+
+export const useSocket = () => {
+    const context = useContext(SocketContext);
+    if (!context) {
+        throw new Error('SocketContext must be used within a SocketProvider');
     }
-    return state;
-}
-export const SocketProvider : React.FC = ( { children } : SocketProviderprops )=>{
-    const [socket,setSocket] = useState<Socket>();
-    const [messages, setMessages] = useState<string[]>([]);
+    return context;
+};
 
-    // this is the send message functionality
-    const sendMessage : ISocketContext["sendMessage"] = useCallback((msg : string)=>{
-        // emit this to the server
-        if(socket){
-            console.log('message successfully sent to the server');
-            socket.emit('event:messages',{message: msg});
-            console.log('message emitted');
-        }
-        
-    },[socket]);
-    // this is the receive message functionality 
-    const onMessageRec = useCallback((msg:string)=>{
-        console.log('message recieved from the server', msg);
-        const { message } = JSON.parse(msg) as { message:string }
-        setMessages((prev)=>[...prev,message]);
-    },[]);
-    //everytime this component mounts, a new connection will be established with the exisitng socket.io connection 
-    useEffect(()=>{
+export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
+    const [socket, setSocket] = useState<Socket | null>(null);
+    const [messages, setMessages] = useState<Record<string, string[]>>({});
+
+    const joinChannel = useCallback(
+        (channel: string) => {
+            if (socket) {
+                console.log(`Joining channel: ${channel}`);
+                socket.emit('join-channel', channel);
+            }
+        },
+        [socket]
+    );
+
+    const sendMessage = useCallback(
+        (channel: string, msg: string) => {
+            if (socket) {
+                socket.emit('event:messages', { channel, message: msg });
+            }
+        },
+        [socket]
+    );
+
+    const onMessageReceive = useCallback(
+        (channel: string, msg: string) => {
+            console.log(`Message received on channel [${channel}]: ${msg}`);
+            setMessages((prev) => ({
+                ...prev,
+                [channel]: [...(prev[channel] || []), msg],
+            }));
+        },
+        []
+    );
+
+    useEffect(() => {
         const _socket = io('http://localhost:8000');
-        _socket.on('message',onMessageRec);
         setSocket(_socket);
-        // when this component unmounts, this socket cnnection shoud be removed
-        return ()=>{
-            _socket.off('message',onMessageRec);
+
+        _socket.on('message', ({ channel, message }) => {
+            onMessageReceive(channel, message);
+        });
+
+        return () => {
             _socket.disconnect();
-            setSocket(undefined);
-        }
+            setSocket(null);
+        };
+    }, [onMessageReceive]);
 
-
-    },[])
-
-    return(
-        <SocketContext.Provider value={{ sendMessage, messages }}> 
+    return (
+        <SocketContext.Provider value={{ joinChannel, sendMessage, messages }}>
             {children}
         </SocketContext.Provider>
-    )
-
-}
+    );
+};
