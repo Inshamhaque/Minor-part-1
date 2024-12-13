@@ -31,7 +31,7 @@ export async function POST(req : NextRequest){
                 facultyId,
                 name,
                 mail : "",
-                department,
+                department : department,
                 verifyOTP : OTP,
                 subscribed : [
                     {

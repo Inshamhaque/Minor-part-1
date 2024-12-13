@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
@@ -8,6 +8,13 @@ import { ContactList } from './contactlist';
 import { useSocket } from '@/context/SocketProvider'; 
 import { getcookie } from '@/actions/get-cookie-value';
 import 'react-toastify/dist/ReactToastify.css';
+
+// Function to generate a consistent, sorted channel name
+const generateChannelName = (user1Id, user2Id) => {
+    // Sort the IDs so the order doesn't matter
+    const sortedIds = [user1Id, user2Id].sort();
+    return `chat-${sortedIds[0]}-${sortedIds[1]}`;
+};
 
 const ChatApp = () => {
     const router = useRouter();
@@ -39,7 +46,7 @@ const ChatApp = () => {
         };
 
         fetchUserData();
-    }, [setUser]);
+    }, []);
 
     // Join a specific channel whenever the channel changes
     useEffect(() => {
@@ -57,59 +64,82 @@ const ChatApp = () => {
         }
     };
 
+    // Function to handle chat selection (for personal chats)
+    const handlePrivateChatSelection = (contact) => {
+        // Generate a unique channel name for the private chat
+        const channelName = generateChannelName(user.facultyId, contact);
+        setChannel(channelName);
+    };
+
     return (
         <div className="grid grid-cols-4 h-screen w-screen">
-            <ContactList chatname={channel} setchatname={setChannel} />
+            <ContactList chatname={channel} setchatname={setChannel} handlePrivateChatSelection={handlePrivateChatSelection} />
             <div className="col-span-3 flex flex-col">
+                {/* Channel Header */}
                 <div className="bg-gray-100 p-4 text-lg font-semibold border-b">
                     {channel.charAt(0).toUpperCase() + channel.slice(1) || 'Select a contact'}
                 </div>
-                {/* Messages section */}
+                {/* Messages Section */}
                 <div
                     className="flex-1 p-4 overflow-y-auto bg-white space-y-2"
                     style={{ maxHeight: 'calc(100vh - 150px)' }}
                 >
-                    {(messages[channel] || []).map((msg, index) => {
-                        const [sender, ...textParts] = msg.split(':');
-                        const text = textParts.join(':');
-                        const isCurrentUser = sender === user.name;
-                        return (
-                            <div
-                                key={index}
-                                className={`flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`}
-                            >
+                    {channel === 'general' ? (
+                        <div className="flex items-center justify-center h-full text-gray-600">
+                            <div className="text-center">
+                                <h1 className="text-2xl font-bold mb-2">Welcome to General Channel</h1>
+                                <p className="text-gray-500">
+                                    Here, you can find general updates and announcements.
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+                        (messages[channel] || []).map((msg, index) => {
+                            const [sender, ...textParts] = msg.split(':');
+                            const text = textParts.join(':');
+                            const isCurrentUser = sender === user.name;
+                            return (
                                 <div
-                                    className={`max-w-xs p-3 rounded-lg ${
-                                        isCurrentUser
-                                            ? 'bg-blue-500 text-white'
-                                            : 'bg-gray-200 text-gray-800'
+                                    key={index}
+                                    className={`flex ${
+                                        isCurrentUser ? 'justify-end' : 'justify-start'
                                     }`}
                                 >
-                                    {!isCurrentUser && (
-                                        <div className="text-sm font-semibold mb-1">{sender}</div>
-                                    )}
-                                    <div>{text.trim()}</div>
+                                    <div
+                                        className={`max-w-xs p-3 rounded-lg ${
+                                            isCurrentUser
+                                                ? 'bg-blue-500 text-white'
+                                                : 'bg-gray-200 text-gray-800'
+                                        }`}
+                                    >
+                                        {!isCurrentUser && (
+                                            <div className="text-sm font-semibold mb-1">{sender}</div>
+                                        )}
+                                        <div>{text.trim()}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    )}
                 </div>
-                {/* Input field */}
-                <div className="p-4 bg-gray-100 border-t flex items-center">
-                    <input
-                        type="text"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="Type a message..."
-                        className="flex-1 p-2 border rounded-lg"
-                    />
-                    <button
-                        onClick={handleSendMessage}
-                        className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
-                    >
-                        Send
-                    </button>
-                </div>
+                {/* Input Field */}
+                {channel !== 'general' && (
+                    <div className="p-4 bg-gray-100 border-t flex items-center">
+                        <input
+                            type="text"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            placeholder="Type a message..."
+                            className="flex-1 p-2 border rounded-md"
+                        />
+                        <button
+                            onClick={handleSendMessage}
+                            className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                        >
+                            Send
+                        </button>
+                    </div>
+                )}
             </div>
             <ToastContainer />
         </div>
